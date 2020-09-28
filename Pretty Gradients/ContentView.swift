@@ -31,8 +31,6 @@ class GradientController: ObservableObject {
     @Published var gradient: Gradient
     @Published var tick: ()
     
-    let colours: [Color] = GradientController.palette.first!
-    
     private static let palette: [[Color]] = [
         [ .red, .blue, .purple, .yellow, .pink, .green, .purple ],
         [.pink, .orange, .red, .purple]
@@ -40,7 +38,11 @@ class GradientController: ObservableObject {
 
     
     init() {
-        gradient = Gradient(colors: colours)
+        // Kids, if you are looking at this... don't force unwrap things... it is not polite.
+        // but in this particular scenario I didn't want to use a magic number to set
+        // anything as the first colour, so I force unwrap this because the static collection
+        // I set up has two elements.
+        gradient = Gradient(colors: GradientController.palette.first!)
         timer.sink { [weak self] _ in
             self?.start = .init(x: 0, y: 4)
             self?.end = .init(x: -10, y: 2)
